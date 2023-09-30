@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecast App</title>
+</head>
+<body>
+  <h1>Weather Forecast</h1>
+  <label for="cityInput">Enter a city:</label>
+  <input type="text" id="cityInput" placeholder="City name"><br><br>
+  <label for="unitSelect">Select Unit:</label>
+  <select id="unitSelect">
+    <option value="metric">Celsius (°C)</option>
+    <option value="imperial">Fahrenheit (°F)</option>
+  </select><br><br>
+  <label for="weatherInfoSelect">Select Weather Information:</label>
+  <select id="weatherInfoSelect">
+    <option value="temperature">Temperature</option>
+    <option value="humidity">Humidity</option>
+    <option value="conditions">Conditions</option>
+  </select><br><br>
+  <button id="getWeatherBtn">Get Weather Info</button>
+  <div id="weatherInfo"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const getWeatherBtn = document.getElementById('getWeatherBtn');
+      const cityInput = document.getElementById('cityInput');
+      const unitSelect = document.getElementById('unitSelect');
+      const weatherInfoSelect = document.getElementById('weatherInfoSelect');
+      const weatherInfo = document.getElementById('weatherInfo');
+
+      getWeatherBtn.addEventListener('click', async () => {
+        const city = cityInput.value;
+        const unit = unitSelect.value;
+        const selectedWeatherInfo = weatherInfoSelect.value;
+        if (!city) {
+          alert('Please enter a city name');
+          return;
+        }
+
+        try {
+          const response = await fetch(`/weather?city=${city}&unit=${unit}`);
+          const data = await response.json();
+
+          if (response.ok) {
+            const temperature = data.temperature;
+            const unitSymbol = unit === 'metric' ? '°C' : '°F';
+            const convertedTemperature = unit === 'metric' ? temperature : (temperature * 9/5) + 32;
+
+            // Display the selected weather information
+            if (selectedWeatherInfo === 'temperature') {
+              weatherInfo.innerHTML = `
+                <h2>Weather in ${city}</h2>
+                <p>Temperature: ${convertedTemperature.toFixed(2)}${unitSymbol}</p>
+              `;
+            } else if (selectedWeatherInfo === 'humidity') {
+              weatherInfo.innerHTML = `
+                <h2>Weather in ${city}</h2>
+                <p>Humidity: ${data.humidity}%</p>
+              `;
+            } else if (selectedWeatherInfo === 'conditions') {
+              weatherInfo.innerHTML = `
+                <h2>Weather in ${city}</h2>
+                <p>Conditions: ${data.conditions}</p>
+              `;
+            }
+          } else {
+            weatherInfo.innerHTML = `<p>Error: ${data.error}</p>`;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

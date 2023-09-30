@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherWise</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#weather-info, #error-message {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>WeatherWise</h1>
+    </header>
+    <main>
+        <div class="search-container">
+            <input type="text" id="location-input" placeholder="Enter city or location">
+            <button id="search-button">Search</button>
+        </div>
+        <div id="weather-info" class="hidden">
+            <h2>Weather for <span id="location-name"></span></h2>
+            <div id="weather-data">
+                <p>Temperature: <span id="temperature"></span></p>
+                <p>Humidity: <span id="humidity"></span></p>
+                <p>Conditions: <span id="conditions"></span></p>
+            </div>
+        </div>
+        <div id="error-message" class="hidden">
+            <p id="error-text"></p>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const locationInput = document.getElementById("location-input");
+    const searchButton = document.getElementById("search-button");
+    const weatherInfo = document.getElementById("weather-info");
+    const locationName = document.getElementById("location-name");
+    const temperature = document.getElementById("temperature");
+    const humidity = document.getElementById("humidity");
+    const conditions = document.getElementById("conditions");
+    const errorMessage = document.getElementById("error-message");
+    const errorText = document.getElementById("error-text");
+
+    // Event listener for the search button
+    searchButton.addEventListener("click", () => {
+        const location = locationInput.value.trim();
+        if (location === "") {
+            showError("Please enter a location.");
+        } else {
+            // Call your weather API function here and update the UI with the weather data
+            // You'll need to implement this part based on your specific API and logic.
+            // Example: getWeatherData(location);
+        }
+    });
+
+    // Function to display weather data
+    function showWeatherData(data) {
+        locationName.textContent = data.location;
+        temperature.textContent = data.temperature;
+        humidity.textContent = data.humidity;
+        conditions.textContent = data.conditions;
+        weatherInfo.classList.remove("hidden");
+        errorMessage.classList.add("hidden");
+    }
+
+    // Function to display an error message
+    function showError(message) {
+        errorText.textContent = message;
+        errorMessage.classList.remove("hidden");
+        weatherInfo.classList.add("hidden");
+    }
+});
+
+    </script>
+</body>
+</html>
+
+    
